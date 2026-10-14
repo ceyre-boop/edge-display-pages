@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Authorization callback - TikTok Display Feed</title><style>body{font:16px/1.5 system-ui,sans-serif;max-width:42rem;margin:2rem auto;padding:0 1rem;color:#111}pre,textarea{width:100%;box-sizing:border-box;font:14px monospace;padding:.5rem}</style></head><body>
+<h1>TikTok Display Feed: authorization</h1>
+<div id="ok" hidden>
+<p>Authorization received. Copy the text below, then paste it into:</p>
+<p><code>python3 feeds/tiktok_display/oauth.py connect --paste</code></p>
+<textarea id="box" rows="4" readonly></textarea>
+<p><button id="copy" type="button">Copy</button> <span id="msg"></span></p>
+<p>This page runs entirely in your browser. Nothing is sent anywhere.</p>
+</div>
+<div id="err" hidden><h2>Authorization failed</h2><pre id="errtxt"></pre></div>
+<div id="none" hidden><p>No authorization data in this URL. Start from the connect command.</p></div>
+<script>
+(function(){
+var q=new URLSearchParams(location.search),g=function(k){return q.get(k)||""};
+var $=function(i){return document.getElementById(i)};
+if(g("error")){$("err").hidden=false;$("errtxt").textContent="error: "+g("error")+"\n"+g("error_description");}
+else if(g("code")){$("ok").hidden=false;
+$("box").value="code: "+g("code")+"\nstate: "+g("state");
+$("copy").onclick=function(){$("box").select();try{document.execCommand("copy");$("msg").textContent="Copied";}catch(e){$("msg").textContent="Select and copy manually";}};}
+else{$("none").hidden=false;}
+})();
+</script>
+</body></html>
